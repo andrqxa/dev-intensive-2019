@@ -24,4 +24,19 @@ class User(
     init {
         println("It's Alive!!!")
     }
+
+    fun printMe(): Unit {
+        println(
+            """
+            id : $id
+            firstName : $firstName
+            lastName : $lastName
+            avatar : $avatar
+            rating : $rating
+            respect : $respect
+            lastVisit : $lastVisit
+            isOnline : $isOnline
+        """.trimIndent()
+        )
+    }
 }
