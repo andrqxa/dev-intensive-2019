@@ -1,7 +1,6 @@
 package ru.skillbranch.devintensive.extensions
 
 
-import java.lang.IllegalArgumentException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,16 +17,23 @@ fun Date.format(pattern: String = "HH:mm:ss dd.MM.yy", locale : String = "ru"): 
     return dateFormat.format(this)
 }
 
-fun Date.add(value : Int, inputUnits : String) : Date{
-    val units = inputUnits.toLowerCase()
+fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date {
     this.time += when(units){
-        "second", "seconds", "sec", "secs" -> value * SECOND
-        "minute", "minutes", "min", "mins" -> value * MINUTE
-        "hour", "hours", "hr", "hrs" -> value * HOUR
-        "day", "days" -> value * DAY
-        "week", "weeks" -> value * WEEK
-        "decade", "decades" -> value * DECADE
-        else -> throw IllegalArgumentException("invalid unit")
+        TimeUnits.SECOND -> value * SECOND
+        TimeUnits.MINUTE -> value * MINUTE
+        TimeUnits.HOUR -> value * HOUR
+        TimeUnits.DAY -> value * DAY
+        TimeUnits.WEEK -> value * WEEK
+        TimeUnits.DECADE -> value * DECADE
     }
     return this
+}
+
+enum class TimeUnits {
+    SECOND,
+    MINUTE,
+    HOUR,
+    DAY,
+    WEEK,
+    DECADE
 }
