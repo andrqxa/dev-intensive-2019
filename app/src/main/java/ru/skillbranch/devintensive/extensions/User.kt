@@ -25,7 +25,7 @@ fun User.toUserView(): UserView {
     )
 }
 
-private fun Date.humanizeDiff(date: Date = Date()): String {
+fun Date.humanizeDiff(date: Date = Date()): String {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
 }
