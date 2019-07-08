@@ -12,17 +12,18 @@ fun String.truncate(len: Int = 16): String {
         }
         else -> ""
     }
-//    val str = this.trim()
-//    val length = when{
-//        len <=0 -> 0
-//        len > str.length -> str.length
-//        else -> len
-//    }
-//    val result0 = str.substring(0 until length)
-//    val result = if(result0.last() == ' ') result0.substring(0 until result0.length) else result0
-//    return "${if(result.length <= length) result else "$result..."}"
 }
 
 fun String.stripHtml(): String {
-    return this
+    val regex = """^\s*<.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*\s*>""".toRegex()
+    val matchResult = regex.find(this)
+//    val matchedResults = Regex(pattern = """^.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*$""").findAll(input = this)
+//    val result = StringBuilder()
+//    for (matchedText in matchedResults) {
+//        result.append(matchedText.value + " ")
+//    }
+    val resultList = matchResult?.groupValues
+    val reg = """\s{2,}""".toRegex()
+    val result = resultList?.get(1)?.replace(reg, " ")
+    return result ?: ""
 }
