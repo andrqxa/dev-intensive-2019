@@ -3,6 +3,7 @@ package ru.skillbranch.devintensive.extensions
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 const val SECOND = 1000L
 const val MINUTE = 60 * SECOND
@@ -38,8 +39,9 @@ enum class TimeUnits {
     DECADE
 }
 
-fun TimeUnits.plural(value: Int): String {
-    val suff = "$value".last()
+fun TimeUnits.plural(value0: Int): String {
+    val suff = "$value0".last()
+    val value = abs(value0)
     return when (this.name) {
         "SECOND" -> {
             when (suff) {

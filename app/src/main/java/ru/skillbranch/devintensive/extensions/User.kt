@@ -30,20 +30,49 @@ fun User.toUserView(): UserView {
 }
 
 fun Date.humanizeDiff(date: Date = Date()): String {
-    val current = Date().time
+    val current = this.time
     val previous = date.time
-    val diff = (current - previous) * SECOND
+//    val diff = (current - previous) * SECOND
+    val diff = (previous - current) / SECOND
     return when {
+        //вперед
+        diff < -(360 * DAYS) -> "более чем через год"
+        diff in -360 * DAYS..-27 * HOURS -> {
+            val days = (diff / DAYS).toInt()
+            "через ${TimeUnits.DAY.plural(days)}"
+        }
+        diff in -26 * HOURS..-23 * HOURS -> "через день"
+        diff in -22 * HOURS..-76 * MINS -> {
+            val hours = (diff / HOURS).toInt()
+            "через ${TimeUnits.HOUR.plural(hours)}"
+        }
+        diff in -75 * MINS..-46 * MINS -> "через час"
+        diff in -45 * MINS..-76 -> {
+            val mins = (diff / MINS).toInt()
+            "через ${TimeUnits.MINUTE.plural(mins)}"
+        }
+        diff in -75..-46 -> "через минуту"
+        diff in -45..-2 -> "через несколько секунд"
+        diff in -1..0 -> "только что"
+        // назад
         diff in 0..1 -> "только что"
         diff in 2..45 -> "несколько секунд назад"
         diff in 46..75 -> "минуту назад"
-//        diff in 76..45* MINS -> "N минут назад"
+        diff in 76..45 * MINS -> {
+            val mins = (diff / MINS).toInt()
+            "${TimeUnits.MINUTE.plural(mins)} назад"
+        }
         diff in 46 * MINS..75 * MINS -> "час назад"
-//        diff in 76*MINS..22* HOURS -> "N часов назад"
+        diff in 76 * MINS..22 * HOURS -> {
+            val hours = (diff / HOURS).toInt()
+            "${TimeUnits.HOUR.plural(hours)} назад"
+        }
         diff in 23 * HOURS..26 * HOURS -> "день назад"
-//        diff in 27*HOURS..360 * DAYS -> "N дней назад"
+        diff in 27 * HOURS..360 * DAYS -> {
+            val days = (diff / DAYS).toInt()
+            "${TimeUnits.DAY.plural(days)} назад"
+        }
         diff > (360 * DAYS) -> "более года назад"
-//        else -> IllegalArgumentException("Illegal time difference")
         else -> "неизвестно"
     }
 }
