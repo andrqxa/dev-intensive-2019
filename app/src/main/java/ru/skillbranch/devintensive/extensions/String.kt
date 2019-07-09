@@ -13,20 +13,6 @@ fun String.truncate(len: Int = 16): String {
         else -> ""
     }
 }
-
-//fun String.stripHtml(): String {
-////    val regex = """^\s*<.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*\s*>""".toRegex()
-////    val matchResult = regex.find(this)
-//////    val matchedResults = Regex(pattern = """^.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*$""").findAll(input = this)
-//////    val result = StringBuilder()
-//////    for (matchedText in matchedResults) {
-//////        result.append(matchedText.value + " ")
-//////    }
-////    val resultList = matchResult?.groupValues
-////    val reg = """\s{2,}""".toRegex()
-////    val result = resultList?.get(1)?.replace(reg, " ")
-////    return result ?: ""
-////}
 fun String.stripHtml(): String {
     val regCRLF = """\r*\n""".toRegex()
     val regexAmp = """&[a-zA-z0-9#]+;""".toRegex()

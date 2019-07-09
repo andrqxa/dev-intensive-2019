@@ -87,13 +87,8 @@ object Utils {
         )
         val payload = payload0.trim()
         val result = StringBuilder()
-//        var isDivided = false
         for (ch in payload) {
             if (ch == ' ') {
-//                if(!isDivided){
-//                    isDivided = true
-//                    result.append(divider)
-//                }
                 result.append(divider)
             } else {
                 if (ch in translate.keys) {

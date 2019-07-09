@@ -32,7 +32,6 @@ fun User.toUserView(): UserView {
 fun Date.humanizeDiff(date: Date = Date()): String {
     val current = this.time
     val previous = date.time
-//    val diff = (current - previous) * SECOND
     val diff = (previous - current) / SECOND
     return when {
         //вперед
