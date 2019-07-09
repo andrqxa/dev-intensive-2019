@@ -14,16 +14,27 @@ fun String.truncate(len: Int = 16): String {
     }
 }
 
+//fun String.stripHtml(): String {
+////    val regex = """^\s*<.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*\s*>""".toRegex()
+////    val matchResult = regex.find(this)
+//////    val matchedResults = Regex(pattern = """^.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*$""").findAll(input = this)
+//////    val result = StringBuilder()
+//////    for (matchedText in matchedResults) {
+//////        result.append(matchedText.value + " ")
+//////    }
+////    val resultList = matchResult?.groupValues
+////    val reg = """\s{2,}""".toRegex()
+////    val result = resultList?.get(1)?.replace(reg, " ")
+////    return result ?: ""
+////}
 fun String.stripHtml(): String {
-    val regex = """^\s*<.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*\s*>""".toRegex()
-    val matchResult = regex.find(this)
-//    val matchedResults = Regex(pattern = """^.*\s*>([a-zA-Zа-яА-Я0-9\-.,!?\s'":]+)<\s*.*$""").findAll(input = this)
-//    val result = StringBuilder()
-//    for (matchedText in matchedResults) {
-//        result.append(matchedText.value + " ")
-//    }
-    val resultList = matchResult?.groupValues
-    val reg = """\s{2,}""".toRegex()
-    val result = resultList?.get(1)?.replace(reg, " ")
-    return result ?: ""
+    val regCRLF = """\r*\n""".toRegex()
+    val regexAmp = """&[a-zA-z0-9#]+;""".toRegex()
+    val regexTag = """<[a-zA-Z0-9="\s.,\/':;-]*>""".toRegex()
+    val regBlank = """\s{2,}""".toRegex()
+    val res0 = this.replace(regCRLF, "~")
+    val res1 = res0.replace(regexAmp, "")
+    val res2 = res1.replace(regexTag, "")
+    val res3 = res2.replace(regBlank, " ")
+    return res3.replace("~", "\n")
 }
