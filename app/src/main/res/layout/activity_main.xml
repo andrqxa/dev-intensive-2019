@@ -42,6 +42,7 @@
                 android:layout_marginRight="@dimen/spacing_normal_16"/>
 
         <ImageView
+                android:id="@+id/iv_send_btn"
                 android:layout_width="@dimen/image_button_size"
                 android:layout_height="@dimen/image_button_size"
                 android:src="@drawable/ic_send_black_24dp"

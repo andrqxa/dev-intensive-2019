@@ -1,10 +1,25 @@
 package ru.skillbranch.devintensive
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import ru.skillbranch.devintensive.models.Bender
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+    lateinit var benderImage: ImageView
+    lateinit var textTxt: TextView
+    lateinit var messageEt: EditText
+    lateinit var sendBtn: ImageView
+
+    lateinit var benderObj: Bender
     /**
      * Вызывается при первом создании или перезапуске Activity
      *
@@ -23,6 +38,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d("M_MainActivity", "onCreate")
+
+//        benderImage = findViewById(R.id.iv_bender)
+        benderImage = iv_bender
+        textTxt = tv_text
+        messageEt = et_message
+        sendBtn = iv_send_btn
+
+        sendBtn.setOnClickListener(this)
+
+        val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
+        val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
+        benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
+
+
+        textTxt.text = benderObj.askQuestion()
     }
 
     /**
@@ -108,5 +138,32 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d("M_MainActivity", "onDestroy")
+    }
+
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.iv_send_btn) {
+            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+            messageEt.setText("")
+            val (r, g, b) = color
+            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+            textTxt.text = phrase
+        }
+    }
+
+    /**
+     * Этот метод сохраняет состояние представления в Bundle
+     * для API Level < 28(Android P) этот метод будет выполняться до onStop(), и нет никаких гарантий относительно того,
+     * произойдет ли это до или после onPause()
+     * Для API Level >= 28(Android P) будет вызван после onStop()
+     * Не будет вызван, если Activity будет явно закрыта пользователем при нажатии на системную клавишу Back
+     */
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putString("STATUS", benderObj.status.name)
+        outState?.putString("QUESTION", benderObj.question.name)
+        Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.status.name}")
+        Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.question.name}")
+
     }
 }
