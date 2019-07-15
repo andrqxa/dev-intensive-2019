@@ -32,7 +32,7 @@ fun String.answerValidation(question: Bender.Question): String {
     return when (question) {
         NAME -> {
             val result: String
-            val regFirstUpperCase = """[A-ZА-Я]+[\wа-яА-Я]*""".toRegex()
+            val regFirstUpperCase = """[A-ZА-Я]+[\wа-яА-Я\s]*""".toRegex()
             result = if (this.matches(regFirstUpperCase)) {
                 this
             } else {
@@ -42,7 +42,7 @@ fun String.answerValidation(question: Bender.Question): String {
         }
         PROFESSION -> {
             val result: String
-            val regFirstLowCase = """[a-zа-я]+[\wа-яА-Я]*""".toRegex()
+            val regFirstLowCase = """[a-zа-я]+[\wа-яА-Я\s]*""".toRegex()
             result = if (this.matches(regFirstLowCase)) {
                 this
             } else {

@@ -29,8 +29,8 @@ class Bender(
             status = status.nextStatus()
             "Это неправильный ответ${
             when (status) {
-                Status.NORMAL, Status.WARNING, Status.DANGER -> ""
-                Status.CRITICAL -> ". Давай все по новой"
+                Status.CRITICAL, Status.WARNING, Status.DANGER -> ""
+                Status.NORMAL -> ". Давай все по новой"
             }}\n${question.question}" to status.color
         }
     }
@@ -51,7 +51,7 @@ class Bender(
     }
 
     enum class Question(val question: String, val answers: List<String>) {
-        NAME("Как меня зовут?", listOf("Бендер", "bender")) {
+        NAME("Как меня зовут?", listOf("бендер", "bender")) {
             override fun nextQuestion(): Question = PROFESSION
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")) {
