@@ -5,6 +5,7 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,6 +21,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var sendBtn: ImageView
 
     lateinit var benderObj: Bender
+
+    private fun sendMessage() {
+        val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
+        messageEt.setText("")
+        val (r, g, b) = color
+        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+        textTxt.text = phrase
+    }
+
     /**
      * Вызывается при первом создании или перезапуске Activity
      *
@@ -38,11 +48,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        benderImage = findViewById(R.id.iv_bender)
         benderImage = iv_bender
         textTxt = tv_text
         messageEt = et_message
         sendBtn = iv_send_btn
+
+
+        messageEt = et_message.apply {
+            setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == IME_ACTION_DONE) {
+                    sendMessage()
+                }
+                return@setOnEditorActionListener false
+            }
+        }
 
         sendBtn.setOnClickListener(this)
 
@@ -145,11 +164,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send_btn) {
-            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
-            messageEt.setText("")
-            val (r, g, b) = color
-            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
+            sendMessage()
         }
     }
 

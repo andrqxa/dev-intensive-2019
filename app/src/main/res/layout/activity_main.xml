@@ -35,11 +35,14 @@
                 android:lines="1"
                 android:textColor="@color/color_gray_light"
                 android:textColorHint="@color/color_gray_light"
-                android:hint="Введите текст"
+                android:hint="@string/enter_text"
                 android:paddingTop="@dimen/spacing_normal_16"
                 android:paddingBottom="@dimen/spacing_normal_16"
                 android:layout_marginLeft="@dimen/spacing_normal_16"
-                android:layout_marginRight="@dimen/spacing_normal_16"/>
+                android:layout_marginRight="@dimen/spacing_normal_16"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:imeActionLabel="@string/Done"/>
 
         <ImageView
                 android:id="@+id/iv_send_btn"
