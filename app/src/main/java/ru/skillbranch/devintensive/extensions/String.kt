@@ -16,6 +16,7 @@ fun String.truncate(len: Int = 16): String {
         else -> ""
     }
 }
+
 fun String.stripHtml(): String {
     val regCRLF = """\r*\n""".toRegex()
     val regexAmp = """&[a-zA-z0-9#]+;""".toRegex()
@@ -42,7 +43,7 @@ fun String.answerValidation(question: Bender.Question): String {
         }
         PROFESSION -> {
             val result: String
-            val regFirstLowCase = """[a-zа-я]+[\wа-яА-Я\s]*""".toRegex()
+            val regFirstLowCase = """[a-zа-я]+[\wа-яА-Я\s.,]*""".toRegex()
             result = if (this.matches(regFirstLowCase)) {
                 this
             } else {

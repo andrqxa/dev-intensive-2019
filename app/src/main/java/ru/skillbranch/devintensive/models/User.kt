@@ -12,15 +12,15 @@ data class User(
     var respect: Int = 0,
     val lastVisit: Date? = Date(),
     val isOnline: Boolean = false
-){
-    constructor(id: String, firstName: String?,lastName: String?) : this(
+) {
+    constructor(id: String, firstName: String?, lastName: String?) : this(
         id = id,
         firstName = firstName,
         lastName = lastName,
         avatar = null
     )
 
-    constructor(id : String) : this(id, "John", "Doe $id")
+    constructor(id: String) : this(id, "John", "Doe $id")
 
     init {
         println(

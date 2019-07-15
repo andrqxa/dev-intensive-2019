@@ -13,13 +13,13 @@ const val WEEK = 7 * DAY
 const val DECADE = 10 * DAY
 
 
-fun Date.format(pattern: String = "HH:mm:ss dd.MM.yy", locale : String = "ru"): String {
+fun Date.format(pattern: String = "HH:mm:ss dd.MM.yy", locale: String = "ru"): String {
     val dateFormat = SimpleDateFormat(pattern, Locale(locale))
     return dateFormat.format(this)
 }
 
 fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date {
-    this.time += when(units){
+    this.time += when (units) {
         TimeUnits.SECOND -> value * SECOND
         TimeUnits.MINUTE -> value * MINUTE
         TimeUnits.HOUR -> value * HOUR

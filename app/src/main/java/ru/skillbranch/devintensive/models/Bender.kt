@@ -17,6 +17,9 @@ class Bender(
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
+        if (question == Question.IDLE) {
+            return question.question to status.color
+        }
         val validatedAnswer = answer.answerValidation(question)
         if (answer != validatedAnswer) {
             return "$validatedAnswer\n${question.question}" to status.color
@@ -30,7 +33,10 @@ class Bender(
             "Это неправильный ответ${
             when (status) {
                 Status.CRITICAL, Status.WARNING, Status.DANGER -> ""
-                Status.NORMAL -> ". Давай все по новой"
+                Status.NORMAL -> {
+                    question = Question.NAME
+                    ". Давай все по новой"
+                }
             }}\n${question.question}" to status.color
         }
     }

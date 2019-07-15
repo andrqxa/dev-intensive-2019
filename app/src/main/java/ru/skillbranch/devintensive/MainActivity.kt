@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         benderImage = iv_bender
         textTxt = tv_text
         messageEt = et_message
-        sendBtn = iv_send_btn
+        sendBtn = iv_send
 
 
         messageEt = et_message.apply {
@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if (v?.id == R.id.iv_send_btn) {
+        if (v?.id == R.id.iv_send) {
             sendMessage()
         }
     }
