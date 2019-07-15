@@ -1,5 +1,7 @@
 package ru.skillbranch.devintensive.models
 
+import ru.skillbranch.devintensive.extensions.answerValidation
+
 class Bender(
     var status: Status = Status.NORMAL,
     var question: Question = Question.NAME
@@ -15,7 +17,12 @@ class Bender(
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
-        return if (question.answers.contains(answer)) {
+        val validatedAnswer = answer.answerValidation(question)
+        if (answer != validatedAnswer) {
+            return "$validatedAnswer\n${question.question}" to status.color
+        }
+
+        return if (question.answers.contains(answer.toLowerCase())) {
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
