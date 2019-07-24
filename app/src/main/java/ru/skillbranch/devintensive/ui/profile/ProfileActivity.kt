@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.Bender
 
@@ -47,7 +46,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_profile)
 
         benderImage = iv_bender
         textTxt = tv_text
