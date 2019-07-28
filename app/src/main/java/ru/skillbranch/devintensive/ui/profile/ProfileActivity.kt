@@ -21,6 +21,7 @@ class ProfileActivity : AppCompatActivity() {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
     }
 
+    private lateinit var viewModel: ProfileViewModel
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
 
@@ -92,6 +93,7 @@ class ProfileActivity : AppCompatActivity() {
         showCurrentMode(isEditMode)
 
         btn_edit.setOnClickListener {
+            if (isEditMode) saveProfileInfo()
             isEditMode = !isEditMode
             showCurrentMode(isEditMode)
         }
@@ -137,7 +139,9 @@ class ProfileActivity : AppCompatActivity() {
             lastName = et_last_name.text.toString(),
             about = et_about.text.toString(),
             repository = et_repository.text.toString()
-        )
+        ).apply {
+            viewModel.saveProfileData(this)
+        }
 
     }
 
