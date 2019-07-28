@@ -8,8 +8,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile_constraint.*
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -39,6 +43,7 @@ class ProfileActivity : AppCompatActivity() {
 //        setContentView(R.layout.activity_profile)
         setContentView(R.layout.activity_profile_constraint)
         initViews(savedInstanceState)
+        initViewModel()
     }
 
     /**
@@ -51,6 +56,19 @@ class ProfileActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putBoolean(IS_EDIT_MODE, isEditMode)
+    }
+
+    private fun initViewModel() {
+        val viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
+        viewModel.geProfileData().observe(this, Observer { updateUI(it) })
+    }
+
+    private fun updateUI(profile: Profile) {
+        profile.toMap().also {
+            for ((k, v) in viewFields) {
+                v.text = it[k].toString()
+            }
+        }
     }
 
     private fun initViews(savedInstanceState: Bundle?) {
@@ -111,6 +129,16 @@ class ProfileActivity : AppCompatActivity() {
             background.colorFilter = filter
             setImageDrawable(icon)
         }
+    }
+
+    private fun saveProfileInfo() {
+        Profile(
+            firstName = et_first_name.text.toString(),
+            lastName = et_last_name.text.toString(),
+            about = et_about.text.toString(),
+            repository = et_repository.text.toString()
+        )
+
     }
 
 }
