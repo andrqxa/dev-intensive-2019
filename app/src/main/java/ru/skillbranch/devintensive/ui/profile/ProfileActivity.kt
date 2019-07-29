@@ -41,6 +41,7 @@ class ProfileActivity : AppCompatActivity() {
      * onStart()
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        //TODO set custom Theme this before super and set ContentWiew
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_profile)
         setContentView(R.layout.activity_profile_constraint)

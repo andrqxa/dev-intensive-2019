@@ -34,9 +34,9 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun switchTheme() {
-        when (appTheme.value == AppCompatDelegate.MODE_NIGHT_YES) {
-            true -> appTheme.value = AppCompatDelegate.MODE_NIGHT_NO
-            else -> appTheme.value = AppCompatDelegate.MODE_NIGHT_YES
+        appTheme.value = when (appTheme.value == AppCompatDelegate.MODE_NIGHT_YES) {
+            true -> AppCompatDelegate.MODE_NIGHT_NO
+            else -> AppCompatDelegate.MODE_NIGHT_YES
         }
         repository.saveAppTheme(appTheme.value!!)
     }
