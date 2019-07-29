@@ -2,6 +2,7 @@ package ru.skillbranch.devintensive.repositories
 
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatDelegate
 import ru.skillbranch.devintensive.App
 import ru.skillbranch.devintensive.models.Profile
 
@@ -13,12 +14,20 @@ object PreferencesRepository {
     private const val REPOSITORY = "REPOSITORY"
     private const val RATING = "RATING"
     private const val RESPECT = "RESPECT"
+    private const val APP_THEME = "APP_THEME"
 
 
     private val prefs: SharedPreferences by lazy {
         val ctx = App.applicationContext()
         PreferenceManager.getDefaultSharedPreferences(ctx)
     }
+
+    fun saveAppTheme(theme: Int) {
+        putValue(APP_THEME to theme)
+    }
+
+    fun getAppTheme() = prefs.getInt(APP_THEME, AppCompatDelegate.MODE_NIGHT_NO)
+
 
     fun saveProfile(profile: Profile) {
         with(profile) {
@@ -30,7 +39,6 @@ object PreferencesRepository {
             putValue(RESPECT to respect)
         }
     }
-
 
     fun getProfile(): Profile = Profile(
         prefs.getString(FIRST_NAME, "")!!,
