@@ -4,6 +4,7 @@ import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -43,6 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_profile)
         setContentView(R.layout.activity_profile_constraint)
+        Log.d("M_ProfileActivity", "onCreate")
         initViews(savedInstanceState)
         initViewModel()
     }
@@ -60,7 +62,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        val viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         viewModel.geProfileData().observe(this, Observer { updateUI(it) })
     }
 
@@ -138,7 +140,9 @@ class ProfileActivity : AppCompatActivity() {
             firstName = et_first_name.text.toString(),
             lastName = et_last_name.text.toString(),
             about = et_about.text.toString(),
-            repository = et_repository.text.toString()
+            repository = et_repository.text.toString(),
+            rating = tv_rating.text.toString().toInt(),
+            respect = tv_respect.text.toString().toInt()
         ).apply {
             viewModel.saveProfileData(this)
         }
