@@ -57,4 +57,9 @@
         <item name="android:minHeight">72dp</item>
     </style>
 
+    <style name="AppTheme.SplashTheme">
+        <item name="android:windowBackground">@drawable/profile_bg</item>
+        <item name="colorPrimaryDark">?attr/colorPrimaryDark</item>
+    </style>
+
 </resources>
