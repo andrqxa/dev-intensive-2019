@@ -21,22 +21,19 @@ class ProfileViewModel : ViewModel() {
         appTheme.value = repository.getAppTheme()
     }
 
-    fun getIsRepoError(): LiveData<Boolean> = isRepoError
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("M_ProfileViewModel", "view model cleared")
+    }
 
     fun getProfileData(): LiveData<Profile> = profileData
 
     fun getTheme(): LiveData<Int> = appTheme
 
-    fun getRepositoryError(): LiveData<Boolean> = repositoryError
 
     fun saveProfileData(profile: Profile) {
         repository.saveProfile(profile)
         profileData.value = profile
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("M_ProfileViewModel", "view model cleared")
     }
 
     fun switchTheme() {
@@ -47,10 +44,13 @@ class ProfileViewModel : ViewModel() {
         repository.saveAppTheme(appTheme.value!!)
     }
 
+    fun getRepositoryError(): LiveData<Boolean> = repositoryError
+
+    fun getIsRepoError(): LiveData<Boolean> = isRepoError
+
     fun onRepositoryChanged(repository: String) {
         repositoryError.value = isValidateRepository(repository)
     }
-
 
     fun onRepoEditCompleted(isError: Boolean) {
         isRepoError.value = isError
@@ -59,7 +59,7 @@ class ProfileViewModel : ViewModel() {
     private fun isValidateRepository(repo: String): Boolean {
         println(repo)
         if (repo.isEmpty()) return true
-        val template = """^(?:https://)?(?:www\.)?github\.com/([a-zA-Z][\w]*)""".toRegex()
+        val template = """^(?:https://)?(?:www\.)?github\.com/([a-zA-Z][a-zA-Z0-9]*-?[a-zA-Z0-9]+)/?$""".toRegex()
         val matchResult = template.find(repo)
         val repoName = matchResult?.groups?.get(1)?.value ?: ""
         return repoName.isNotEmpty() && isExluded(repoName)
@@ -70,9 +70,5 @@ class ProfileViewModel : ViewModel() {
             "enterprise", "features", "topics", "collections", "trending", "events", "marketplace", "pricing",
             "nonprofit", "customer-stories", "security", "login", "join"
         )
-
-
-
-
 
 }
