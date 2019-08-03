@@ -261,6 +261,8 @@
         android:id="@+id/et_repository"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:imeOptions="actionDone"
         android:hint="@string/profile_hint_repository"
         tools:text="http://github.com/somehow"/>
   </com.google.android.material.textfield.TextInputLayout>
