@@ -219,7 +219,7 @@
       app:counterEnabled="true"
       app:counterMaxLength="128">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         style="@style/Profile.EditText.MultiLine"
         android:id="@+id/et_about"
         android:layout_width="match_parent"
@@ -256,7 +256,7 @@
       app:layout_constraintEnd_toStartOf="@+id/ic_eye"
       android:layout_marginEnd="@dimen/spacing_normal_16">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         style="@style/Profile.EditText.Single"
         android:id="@+id/et_repository"
         android:layout_width="match_parent"

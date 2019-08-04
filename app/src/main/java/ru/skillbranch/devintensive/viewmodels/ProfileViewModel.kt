@@ -19,6 +19,8 @@ class ProfileViewModel : ViewModel() {
         Log.d("M_ProfileViewModel", "init view model")
         profileData.value = repository.getProfile()
         appTheme.value = repository.getAppTheme()
+//        repositoryError.value = repository.getRepositoryError()
+//        isRepoError.value = repository.getIsRepoError()
     }
 
     override fun onCleared() {
@@ -30,8 +32,13 @@ class ProfileViewModel : ViewModel() {
 
     fun getTheme(): LiveData<Int> = appTheme
 
+    fun getRepositoryError(): LiveData<Boolean> = repositoryError
+
+    fun getIsRepoError(): LiveData<Boolean> = isRepoError
 
     fun saveProfileData(profile: Profile) {
+//        repository.saveRepositoryError(repositoryError.value!!)
+//        repository.saveIsRepoError(isRepoError.value!!)
         repository.saveProfile(profile)
         profileData.value = profile
     }
@@ -44,10 +51,6 @@ class ProfileViewModel : ViewModel() {
         repository.saveAppTheme(appTheme.value!!)
     }
 
-    fun getRepositoryError(): LiveData<Boolean> = repositoryError
-
-    fun getIsRepoError(): LiveData<Boolean> = isRepoError
-
     fun onRepositoryChanged(repository: String) {
         repositoryError.value = isValidateRepository(repository)
     }
@@ -56,14 +59,26 @@ class ProfileViewModel : ViewModel() {
         isRepoError.value = isError
     }
 
-    private fun isValidateRepository(repo: String): Boolean {
-        println(repo)
-        if (repo.isEmpty()) return true
-        val template = """^(?:https://)?(?:www\.)?github\.com/([a-zA-Z][a-zA-Z0-9]*-?[a-zA-Z0-9]+)/?$""".toRegex()
-        val matchResult = template.find(repo)
-        val repoName = matchResult?.groups?.get(1)?.value ?: ""
-        return repoName.isNotEmpty() && isExluded(repoName)
-    }
+    //    private fun isValidateRepository(repo: String): Boolean {
+//        println(repo)
+//        if (repo.isBlank() || repo.isEmpty()) {
+//            return true
+//        }
+//        val template = """^(?:https://)?(?:www\.)?github\.com/([a-zA-Z][a-zA-Z0-9]*-?[a-zA-Z0-9]+)/?$""".toRegex()
+//        val matchResult = template.find(repo)
+//        val repoName = matchResult?.groups?.get(1)?.value ?: ""
+//        return !(repoName.isNotEmpty() && isExluded(repoName))
+////        return repoName.isNotEmpty() || !isExluded(repoName)
+//    }
+    private fun isValidateRepository(repo: String) =
+        if (repo.isBlank() || repo.isEmpty()) {
+            false
+        } else {
+            val template = """^(?:https://)?(?:www\.)?github\.com/([a-zA-Z][a-zA-Z0-9]*-?[a-zA-Z0-9]+)/?$""".toRegex()
+            val matchResult = template.find(repo)
+            val repoName = matchResult?.groups?.get(1)?.value ?: ""
+            !(repoName.isNotEmpty() && isExluded(repoName))
+        }
 
     private fun isExluded(repo: String) =
         repo.trim().toLowerCase() !in listOf(
