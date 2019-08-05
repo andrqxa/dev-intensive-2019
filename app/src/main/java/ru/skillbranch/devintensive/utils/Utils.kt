@@ -1,5 +1,8 @@
 package ru.skillbranch.devintensive.utils
 
+import android.content.Context
+import android.util.DisplayMetrics
+
 object Utils {
     fun parseFullName(inputFullName: String?): Pair<String?, String?> {
         val name1 = inputFullName?.replace("\\s+".toRegex(), " ")
@@ -121,5 +124,19 @@ object Utils {
             }
             else -> throw IllegalArgumentException("Not parsable")
         }
+    }
+
+    fun pixels2Dp(cntx: Context, px: Int): Int {
+        val displayMetrics = cntx.resources.displayMetrics
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+    }
+
+    fun dp2Pixels(cntx: Context, dp: Float): Int {
+        val displayMetrics = cntx.resources.displayMetrics
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+    }
+
+    fun sp2Pixels(context: Context, i: Int): Int {
+        return i * context.resources.displayMetrics.scaledDensity.toInt()
     }
 }

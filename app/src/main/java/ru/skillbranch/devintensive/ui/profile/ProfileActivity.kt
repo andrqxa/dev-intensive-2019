@@ -1,12 +1,11 @@
 package ru.skillbranch.devintensive.ui.profile
 
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
+import android.graphics.*
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -16,6 +15,8 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile_constraint.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.ui.custom.TextBitmapBuilder
+import ru.skillbranch.devintensive.utils.Utils
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
@@ -27,6 +28,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var viewModel: ProfileViewModel
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
+    private var userInitials: String? = null
 
     /**
      * Вызывается при первом создании или перезапуске Activity
@@ -151,13 +153,8 @@ class ProfileActivity : AppCompatActivity() {
 
         with(btn_edit) {
             val filter: ColorFilter? = if (isEdit) {
-                PorterDuffColorFilter(
-                    resources.getColor(R.color.color_accent, theme),
-                    PorterDuff.Mode.SRC_IN
-                )
-            } else {
-                null
-            }
+                PorterDuffColorFilter(getThemeAccentColor(), PorterDuff.Mode.SRC_IN)
+            } else null
 
             val icon = if (isEdit) {
                 resources.getDrawable(R.drawable.ic_save_black_24dp, theme)
@@ -168,6 +165,12 @@ class ProfileActivity : AppCompatActivity() {
             background.colorFilter = filter
             setImageDrawable(icon)
         }
+    }
+
+    private fun getThemeAccentColor(): Int {
+        val value = TypedValue()
+        theme.resolveAttribute(R.attr.colorAccent, value, true)
+        return value.data
     }
 
     private fun saveProfileInfo() {
@@ -182,5 +185,26 @@ class ProfileActivity : AppCompatActivity() {
             viewModel.saveProfileData(this)
         }
 
+    }
+
+    private fun updateAvatar(profile: Profile) {
+        Utils.toInitials(profile.firstName, profile.lastName)?.let {
+            if (it != userInitials) {
+                val avatar = getAvatarBitmap(it)
+                iv_avatar.setImageBitmap(avatar)
+            }
+        } ?: iv_avatar.setImageResource(R.drawable.avatar_default)
+    }
+
+    private fun getAvatarBitmap(text: String): Bitmap {
+        val color = TypedValue()
+        theme.resolveAttribute(R.attr.colorAccent, color, true)
+
+        return TextBitmapBuilder(iv_avatar.layoutParams.width, iv_avatar.layoutParams.height)
+            .setBackgroundColor(color.data)
+            .setText(text)
+            .setTextSize(Utils.sp2Pixels(this, 48))
+            .setTextColor(Color.WHITE)
+            .build()
     }
 }
